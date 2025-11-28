@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "declaration": true,
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "test/*": ["./test/*"]
+    },
+    "types": ["vitest/globals"]
+  },
+  "include": ["src/**/*", "vitest.config.ts", "vitest.setup.ts"],
+  "exclude": [
+    "node_modules",
+    "**/__tests__/*",
+  ]
+}

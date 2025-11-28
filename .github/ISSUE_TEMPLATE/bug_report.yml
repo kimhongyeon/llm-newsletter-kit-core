@@ -1,0 +1,83 @@
+ name: "Bug report"
+ description: "Report a bug to help us improve"
+ title: "bug: <short description>"
+ labels: ["bug"]
+ body:
+   - type: markdown
+     attributes:
+       value: |
+         Thanks for taking the time to fill out a bug report!
+         If this is a security-related vulnerability, please do NOT open a public issue. Follow SECURITY.md instead.
+   - type: input
+     id: version
+     attributes:
+       label: Package version
+       description: Version of @llm-newsletter-kit/core (e.g., 1.0.0)
+       placeholder: 1.0.0
+     validations:
+       required: true
+   - type: input
+     id: node
+     attributes:
+       label: Node.js version
+       placeholder: 22.x / 24.x
+     validations:
+       required: true
+   - type: textarea
+     id: description
+     attributes:
+       label: Description
+       description: What happened? A clear and concise description of the bug.
+       placeholder: Describe the issue
+     validations:
+       required: true
+   - type: textarea
+     id: reproduction
+     attributes:
+       label: Reproduction steps
+       description: Provide steps/code to reproduce the behavior.
+       render: bash
+       placeholder: |
+         1. Clone repo
+         2. npm ci
+         3. Run command '...'
+         4. See error
+     validations:
+       required: true
+   - type: textarea
+     id: expected
+     attributes:
+       label: Expected behavior
+       placeholder: What did you expect to happen?
+     validations:
+       required: true
+   - type: textarea
+     id: actual
+     attributes:
+       label: Actual behavior / logs
+       description: Include full error logs and stack traces if possible.
+       render: text
+     validations:
+       required: false
+   - type: dropdown
+     id: environment
+     attributes:
+       label: Environment
+       options:
+         - Linux
+         - macOS
+         - Windows
+         - Other/CI
+     validations:
+       required: true
+   - type: checkboxes
+     id: checks
+     attributes:
+       label: Checks
+       options:
+         - label: I am not reporting a security vulnerability (see SECURITY.md for private reporting)
+           required: true
+         - label: I have searched existing issues and discussions
+           required: true
+         - label: I can reproduce this with the latest version
+           required: true

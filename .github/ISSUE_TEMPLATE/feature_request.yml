@@ -1,0 +1,45 @@
+ name: "Feature request"
+ description: "Suggest an idea for this project"
+ title: "feat: <short description>"
+ labels: ["enhancement"]
+ body:
+   - type: markdown
+     attributes:
+       value: |
+         Thanks for suggesting a feature! Please check existing issues/discussions first.
+   - type: textarea
+     id: problem
+     attributes:
+       label: Problem statement
+       description: Is your feature request related to a problem? Please describe.
+       placeholder: I'm frustrated when ...
+     validations:
+       required: true
+   - type: textarea
+     id: solution
+     attributes:
+       label: Proposed solution
+       placeholder: Describe the solution you'd like
+     validations:
+       required: true
+   - type: textarea
+     id: alternatives
+     attributes:
+       label: Alternatives considered
+       placeholder: Describe alternatives you've considered
+     validations:
+       required: false
+   - type: textarea
+     id: context
+     attributes:
+       label: Additional context
+       placeholder: Add any other context, screenshots, or examples here
+     validations:
+       required: false
+   - type: checkboxes
+     id: checks
+     attributes:
+       label: Checks
+       options:
+         - label: I have searched existing issues and discussions
+           required: true

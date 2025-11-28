@@ -1,0 +1,18 @@
+{
+  "importOrder": [
+    "^.+\\.(svg|png|jpg|jpeg|gif|webp)$",
+    "<THIRD_PARTY_TS_TYPES>",
+    "<TS_TYPES>^[./]",
+    "<THIRD_PARTY_MODULES>",
+    "^~/lib/(.*)$",
+    "^~/(.*)$",
+    "^[./]"
+  ],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "singleQuote": true,
+  "trailingComma": "all"
+}

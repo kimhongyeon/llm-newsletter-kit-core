@@ -1,0 +1,111 @@
+{
+  "name": "@llm-newsletter-kit/core",
+  "private": false,
+  "type": "module",
+  "version": "1.0.1",
+  "description": "An extensible framework to automate your entire newsletter workflow. Handles data collection, LLM-based content analysis, and email generation, letting you focus on your unique domain logic.",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && rollup -c",
+    "prepublishOnly": "npm run build",
+    "preversion": "npm run build",
+    "postversion": "git push --follow-tags",
+    "release": "npm publish --access public",
+    "release:patch": "npm version patch && npm publish --access public",
+    "release:minor": "npm version minor && npm publish --access public",
+    "release:major": "npm version major && npm publish --access public",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ci": "TEST_MODE=ci vitest run --coverage",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:watch": "vitest --coverage",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src",
+    "lint:ci": "eslint --quiet ./src",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md,mdx}\""
+  },
+  "author": "kimhongyeon",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@langchain/core": "^1.1.0",
+    "ai": "^5.0.104",
+    "dompurify": "^3.3.0",
+    "es-toolkit": "^1.42.0",
+    "jsdom": "^27.2.0",
+    "juice": "^11.0.3",
+    "marked": "^17.0.1",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
+    "@types/jsdom": "^27.0.0",
+    "@types/node": "^24.10.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/expect": "^3.2.4",
+    "eslint": "^9.39.1",
+    "eslint-plugin-unused-imports": "^4.3.0",
+    "prettier": "^3.7.1",
+    "rimraf": "^6.1.2",
+    "rollup": "^4.53.3",
+    "rollup-plugin-dts": "^6.3.0",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.0",
+    "vitest": "^3.2.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kimhongyeon/llm-newsletter-kit-core"
+  },
+  "bugs": {
+    "url": "https://github.com/kimhongyeon/llm-newsletter-kit-core/issues"
+  },
+  "homepage": "https://github.com/kimhongyeon/llm-newsletter-kit-core",
+  "keywords": [
+    "llm",
+    "newsletter",
+    "ai",
+    "automation",
+    "framework",
+    "toolkit",
+    "large-language-model",
+    "gpt",
+    "email-automation",
+    "content-aggregation",
+    "content-generation",
+    "summarization",
+    "web-scraping",
+    "parsing",
+    "extensible",
+    "pluggable",
+    "workflow-automation",
+    "developer-tools",
+    "nodejs"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
