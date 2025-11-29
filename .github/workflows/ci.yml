@@ -4,16 +4,6 @@ on:
   pull_request:
     branches:
       - "**"
-    paths:
-      - "src/**"
-      - "test/**"
-      - "package.json"
-      - "package-lock.json"
-      - "rollup.config.js"
-      - "tsconfig*.json"
-      - "vitest.*"
-      - "eslint.config.mjs"
-      - ".github/workflows/ci.yml"
   workflow_dispatch:
 
 concurrency:
