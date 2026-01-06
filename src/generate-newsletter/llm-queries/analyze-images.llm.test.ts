@@ -1,4 +1,4 @@
-import { generateObject } from 'ai';
+import { generateText } from 'ai';
 
 import AnalyzeImages from './analyze-images.llm';
 
@@ -49,7 +49,7 @@ describe('AnalyzeImages', () => {
     const result = await query.execute();
 
     expect(result).toBeNull();
-    expect(generateObject).not.toHaveBeenCalled();
+    expect(generateText).not.toHaveBeenCalled();
   });
 
   test('returns null when article has no detail content', async () => {
@@ -64,7 +64,7 @@ describe('AnalyzeImages', () => {
     const result = await query.execute();
 
     expect(result).toBeNull();
-    expect(generateObject).not.toHaveBeenCalled();
+    expect(generateText).not.toHaveBeenCalled();
   });
 
   test('returns null when there are no image urls in content', async () => {
@@ -79,10 +79,10 @@ describe('AnalyzeImages', () => {
     const result = await query.execute();
 
     expect(result).toBeNull();
-    expect(generateObject).not.toHaveBeenCalled();
+    expect(generateText).not.toHaveBeenCalled();
   });
 
-  test('calls generateObject with correct params and returns imageContext', async () => {
+  test('calls generateText with correct params and returns imageContext', async () => {
     const detailContent = [
       'Some intro text.',
       '![a](http://a.com/img.png)',
@@ -103,22 +103,22 @@ describe('AnalyzeImages', () => {
     });
 
     const expectedContext = 'Comprehensive image-based insights.';
-    vi.mocked(generateObject).mockResolvedValue({
-      object: { imageContext: expectedContext },
+    vi.mocked(generateText).mockResolvedValue({
+      output: { imageContext: expectedContext },
     } as any);
 
     const result = await query.execute();
 
     expect(result).toBe(expectedContext);
-    expect(generateObject).toHaveBeenCalledTimes(1);
+    expect(generateText).toHaveBeenCalledTimes(1);
 
-    const callArg = vi.mocked(generateObject).mock.calls[0][0] as any;
+    const callArg = vi.mocked(generateText).mock.calls[0][0] as any;
     expect(callArg.model).toBe((query as any).model);
     expect(callArg.maxRetries).toBe(3);
 
     // schema: requires { imageContext: string }
-    expect(() => callArg.schema.parse({ imageContext: 'ok' })).not.toThrow();
-    expect(() => callArg.schema.parse({})).toThrow();
+    expect(() => callArg.output.schema.parse({ imageContext: 'ok' })).not.toThrow();
+    expect(() => callArg.output.schema.parse({})).toThrow();
 
     // system prompt should include expert field and output language
     expect(callArg.system).toContain('AI');

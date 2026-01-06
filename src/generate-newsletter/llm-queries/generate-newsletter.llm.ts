@@ -1,6 +1,6 @@
 import type { ArticleForGenerateContent } from '../models/article';
 
-import { generateObject } from 'ai';
+import { Output, generateText } from 'ai';
 import { pick } from 'es-toolkit';
 import { z } from 'zod';
 
@@ -81,7 +81,7 @@ export default class GenerateNewsletter<TaskId> extends BaseLLMQuery<
   }
 
   public async execute(): Promise<ReturnType> {
-    const { object } = await generateObject({
+    const { output } = await generateText({
       model: this.model,
       maxRetries: this.options.llm.maxRetries,
       maxOutputTokens: this.maxOutputTokens,
@@ -90,24 +90,26 @@ export default class GenerateNewsletter<TaskId> extends BaseLLMQuery<
       topK: this.topK,
       presencePenalty: this.presencePenalty,
       frequencyPenalty: this.frequencyPenalty,
-      schema: this.schema,
+      output: Output.object({
+        schema: this.schema,
+      }),
       system: this.systemPrompt,
       prompt: this.userPrompt,
     });
 
-    if (!object.isWrittenInOutputLanguage) {
+    if (!output.isWrittenInOutputLanguage) {
       return this.execute();
     }
 
-    if (!object.copyrightVerified) {
+    if (!output.copyrightVerified) {
       return this.execute();
     }
 
-    if (!object.factAccuracy) {
+    if (!output.factAccuracy) {
       return this.execute();
     }
 
-    return pick(object, ['title', 'content']);
+    return pick(output, ['title', 'content']);
   }
 
   private get systemPrompt(): string {

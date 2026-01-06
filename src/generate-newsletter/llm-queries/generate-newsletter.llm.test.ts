@@ -1,5 +1,5 @@
 import GenerateNewsletter from './generate-newsletter.llm';
-import { generateObject } from 'ai';
+import { generateText } from 'ai';
 
 const longTitle = 'This is a sufficiently long newsletter title for testing';
 
@@ -59,7 +59,7 @@ function buildConfig(overrides: Partial<Record<string, any>> = {}) {
 }
 
 function mockObjectOnce(obj: any) {
-  vi.mocked(generateObject).mockResolvedValueOnce({ object: obj } as any);
+  vi.mocked(generateText).mockResolvedValueOnce({ output: obj } as any);
 }
 
 describe('GenerateNewsletter.execute', () => {
@@ -78,8 +78,8 @@ describe('GenerateNewsletter.execute', () => {
 
     const result = await instance.execute();
 
-    expect(generateObject).toHaveBeenCalledTimes(1);
-    const callArg = vi.mocked(generateObject).mock.calls[0][0] as any;
+    expect(generateText).toHaveBeenCalledTimes(1);
+    const callArg = vi.mocked(generateText).mock.calls[0][0] as any;
 
     // core options
     expect(callArg.model).toBe(cfg.model);
@@ -113,7 +113,7 @@ describe('GenerateNewsletter.execute', () => {
     expect(imageAnalysisMatches.length).toBe(1);
 
     // schema: should parse returned shape
-    expect(() => callArg.schema.parse({
+    expect(() => callArg.output.schema.parse({
       title: longTitle,
       content: 'content',
       isWrittenInOutputLanguage: true,
@@ -145,7 +145,7 @@ describe('GenerateNewsletter.execute', () => {
     const instance = new (GenerateNewsletter as any)(buildConfig());
     const res = await instance.execute();
 
-    expect(generateObject).toHaveBeenCalledTimes(2);
+    expect(generateText).toHaveBeenCalledTimes(2);
     expect(res).toEqual({ title: longTitle, content: 'Good content' });
   });
 
@@ -168,7 +168,7 @@ describe('GenerateNewsletter.execute', () => {
     const instance = new (GenerateNewsletter as any)(buildConfig());
     const res = await instance.execute();
 
-    expect(generateObject).toHaveBeenCalledTimes(2);
+    expect(generateText).toHaveBeenCalledTimes(2);
     expect(res).toEqual({ title: longTitle, content: 'Good content 2' });
   });
 
@@ -191,7 +191,7 @@ describe('GenerateNewsletter.execute', () => {
     const instance = new (GenerateNewsletter as any)(buildConfig());
     const res = await instance.execute();
 
-    expect(generateObject).toHaveBeenCalledTimes(2);
+    expect(generateText).toHaveBeenCalledTimes(2);
     expect(res).toEqual({ title: longTitle, content: 'Accurate' });
   });
 
@@ -217,7 +217,7 @@ describe('GenerateNewsletter.execute', () => {
 
     await instance.execute();
 
-    const callArg = vi.mocked(generateObject).mock.calls[0][0] as any;
+    const callArg = vi.mocked(generateText).mock.calls[0][0] as any;
     expect(callArg.temperature).toBe(0.9);
     expect(callArg.topP).toBe(0.8);
     expect(callArg.topK).toBe(40);

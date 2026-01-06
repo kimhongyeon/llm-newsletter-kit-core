@@ -1,11 +1,11 @@
-import { generateObject } from 'ai';
+import { generateText } from 'ai';
 
 import DetermineArticleImportance from './determine-article-importance.llm';
 
 describe('DetermineArticleImportance', () => {
   const date = '2024-01-02T10:00:00.000Z';
 
-  test('execute calls generateObject correctly (minPoint=1, no image) and returns importance score', async () => {
+  test('execute calls generateText correctly (minPoint=1, no image) and returns importance score', async () => {
     const model: any = { name: 'fake-model' };
     const logger: any = {
       info: vi.fn(),
@@ -46,24 +46,24 @@ describe('DetermineArticleImportance', () => {
       },
     });
 
-    vi.mocked(generateObject).mockResolvedValue({
-      object: { importanceScore: 7 },
+    vi.mocked(generateText).mockResolvedValue({
+      output: { importanceScore: 7 },
     } as any);
 
     const result = await query.execute();
 
     expect(result).toBe(7);
-    expect(generateObject).toHaveBeenCalledTimes(1);
+    expect(generateText).toHaveBeenCalledTimes(1);
 
-    const callArg = vi.mocked(generateObject).mock.calls[0][0] as any;
+    const callArg = vi.mocked(generateText).mock.calls[0][0] as any;
     expect(callArg.model).toBe(model);
     expect(callArg.maxRetries).toBe(2);
 
     // zod schema boundaries
-    expect(() => callArg.schema.parse({ importanceScore: 1 })).not.toThrow();
-    expect(() => callArg.schema.parse({ importanceScore: 10 })).not.toThrow();
-    expect(() => callArg.schema.parse({ importanceScore: 0 })).toThrow();
-    expect(() => callArg.schema.parse({ importanceScore: 11 })).toThrow();
+    expect(() => callArg.output.schema.parse({ importanceScore: 1 })).not.toThrow();
+    expect(() => callArg.output.schema.parse({ importanceScore: 10 })).not.toThrow();
+    expect(() => callArg.output.schema.parse({ importanceScore: 0 })).toThrow();
+    expect(() => callArg.output.schema.parse({ importanceScore: 11 })).toThrow();
 
     // system prompt should include expert field and reflect minPoint=1 branch
     expect(callArg.system).toContain('AI');
@@ -135,17 +135,17 @@ describe('DetermineArticleImportance', () => {
       },
     });
 
-    vi.mocked(generateObject).mockResolvedValue({
-      object: { importanceScore: 9 },
+    vi.mocked(generateText).mockResolvedValue({
+      output: { importanceScore: 9 },
     } as any);
 
     const date = '2024-05-10T08:00:00.000Z';
     const result = await query.execute();
 
     expect(result).toBe(9);
-    expect(generateObject).toHaveBeenCalledTimes(1);
+    expect(generateText).toHaveBeenCalledTimes(1);
 
-    const callArg = vi.mocked(generateObject).mock.calls[0][0] as any;
+    const callArg = vi.mocked(generateText).mock.calls[0][0] as any;
     expect(callArg.model).toBe(model);
     expect(callArg.maxRetries).toBe(5);
 
@@ -220,8 +220,8 @@ describe('DetermineArticleImportance - fallbacks', () => {
       },
     });
 
-    vi.mocked((await import('ai')).generateObject).mockResolvedValue({
-      object: { importanceScore: 3 },
+    vi.mocked((await import('ai')).generateText).mockResolvedValue({
+      output: { importanceScore: 3 },
     } as any);
 
     const date = '2024-06-15T12:30:00.000Z';
@@ -229,7 +229,7 @@ describe('DetermineArticleImportance - fallbacks', () => {
 
     expect(result).toBe(3);
 
-    const callArg = vi.mocked((await import('ai')).generateObject).mock
+    const callArg = vi.mocked((await import('ai')).generateText).mock
       .calls[0][0] as any;
 
     expect(callArg.prompt).toContain(
